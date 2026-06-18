@@ -15,4 +15,9 @@ class CreateFactSale extends CreateRecord
     {
         return static::getResource()::getUrl('index');
     }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'Data Berhasil Disimpan';
+    }
 }
