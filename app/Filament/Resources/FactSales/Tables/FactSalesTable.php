@@ -8,12 +8,14 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Carbon\Carbon;
 
 class FactSalesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 TextColumn::make('product.product_name')
                     ->label('Produk')
@@ -23,6 +25,12 @@ class FactSalesTable
                     ->searchable(),
                 TextColumn::make('time.transaction_date')
                     ->label('Tanggal')
+                    ->formatStateUsing(
+                        fn ($state) =>
+                        Carbon::parse($state)
+                            ->locale('id')
+                            ->translatedFormat('d F Y')
+                    )
                     ->searchable(),
                 TextColumn::make('quantity')
                     ->label('Jumlah')
@@ -30,11 +38,18 @@ class FactSalesTable
                     ->sortable(),
                 TextColumn::make('unit_price')
                     ->label('Harga Satuan')
-                    ->money('IDR')
+                    ->numeric(
+                        decimalPlaces: 0,
+                        thousandsSeparator: '.',
+                    )
                     ->sortable(),
                 TextColumn::make('total_price')
                     ->label('Total Harga')
-                    ->money('IDR')
+                    ->numeric(
+                        decimalPlaces: 0,
+                        thousandsSeparator: '.',
+                    )
+                    ->prefix('Rp ')
                     ->sortable(),
             ])
             ->filters([
@@ -42,7 +57,9 @@ class FactSalesTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->modalHeading('Hapus Data')
+                    ->modalDescription('Data yang dihapus tidak dapat dikembalikan.'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

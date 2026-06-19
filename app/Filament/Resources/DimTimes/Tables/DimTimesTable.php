@@ -14,6 +14,7 @@ class DimTimesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 TextColumn::make('transaction_date')
                     ->label('Tanggal')
@@ -21,7 +22,6 @@ class DimTimesTable
                     ->sortable(),
                 TextColumn::make('year')
                     ->label('Tahun')
-                    ->numeric()
                     ->sortable(),
                 TextColumn::make('month')
                     ->label('Bulan')
@@ -29,18 +29,41 @@ class DimTimesTable
                     ->sortable(),
                 TextColumn::make('month_name')
                     ->label('Nama Bulan')
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        'January' => 'Januari',
+                        'February' => 'Februari',
+                        'March' => 'Maret',
+                        'April' => 'April',
+                        'May' => 'Mei',
+                        'June' => 'Juni',
+                        'July' => 'Juli',
+                        'August' => 'Agustus',
+                        'September' => 'September',
+                        'October' => 'Oktober',
+                        'November' => 'November',
+                        'December' => 'Desember',
+                        default => $state,
+                    })
                     ->searchable(),
                 TextColumn::make('quarter')
                     ->label('Kuartal')
-                    ->numeric()
-                    ->sortable(),
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        1 => 'info',
+                        2 => 'success',
+                        3 => 'warning',
+                        4 => 'danger',
+                        default => 'gray',
+                    }),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->modalHeading('Hapus Data')
+                    ->modalDescription('Data yang dihapus tidak dapat dikembalikan.'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             ->login()
-            ->colors(['primary' => Color::Indigo])
+            ->colors(['primary' => Color::Lime])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->spa()
             ->simplePageMaxContentWidth(Width::Medium)
+            ->sidebarCollapsibleOnDesktop()
             ->unsavedChangesAlerts()
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

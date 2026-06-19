@@ -14,19 +14,39 @@ class DimProductsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)
             ->columns([
                 TextColumn::make('product_code')
                     ->label('Kode Produk')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('product_name')
                     ->label('Nama Produk')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('category')
                     ->label('Kategori')
-                    ->searchable(),
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'Electronics' => 'Elektronik',
+                        'Accessories' => 'Aksesoris',
+                        'Clothing' => 'Pakaian',
+                        default => $state,
+                    })
+                    ->sortable()
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Electronics' => 'info',
+                        'Accessories' => 'warning',
+                        'Clothing' => 'success',
+                        default => 'gray',
+                    }),
                 TextColumn::make('price')
                     ->label('Harga')
-                    ->money('IDR')
+                    ->numeric(
+                        thousandsSeparator: '.',
+                        decimalPlaces: 0,
+                    )
+                    ->prefix('Rp ')
                     ->sortable(),
             ])
             ->filters([
@@ -34,7 +54,9 @@ class DimProductsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->modalHeading('Hapus Data')
+                    ->modalDescription('Data yang dihapus tidak dapat dikembalikan.'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

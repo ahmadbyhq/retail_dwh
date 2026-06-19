@@ -15,21 +15,21 @@ class DimTimeForm
                 DatePicker::make('transaction_date')
                     ->label('Tanggal')
                     ->required(),
-                TextInput::make('year')
-                    ->label('Tahun')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('month')
-                    ->label('Bulan')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('month_name')
-                    ->label('Nama Bulan')
-                    ->required(),
-                TextInput::make('quarter')
-                    ->label('Kuartal')
-                    ->required()
-                    ->numeric(),
+                // TextInput::make('year')
+                //     ->label('Tahun')
+                //     ->required()
+                //     ->numeric(),
+                // TextInput::make('month')
+                //     ->label('Bulan')
+                //     ->required()
+                //     ->numeric(),
+                // TextInput::make('month_name')
+                //     ->label('Nama Bulan')
+                //     ->required(),
+                // TextInput::make('quarter')
+                //     ->label('Kuartal')
+                //     ->required()
+                //     ->numeric(),
             ]);
     }
 }
